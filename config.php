@@ -9,7 +9,8 @@ define('DB_NAME', getenv('DB_NAME') ?: 'neondb');
 define('DB_USER', getenv('DB_USER') ?: 'neondb_owner');
 define('DB_PASS', getenv('DB_PASS') ?: 'npg_9pzPHG2dftiU');
 define('DB_SSLMODE', getenv('DB_SSLMODE') ?: 'require');
-define('DB_ENDPOINT', getenv('DB_ENDPOINT') ?: 'ep-steep-field-azbpni91');
+$defaultEndpoint = explode('.', DB_HOST)[0] ?? 'ep-steep-field-azbpni91-pooler';
+define('DB_ENDPOINT', getenv('DB_ENDPOINT') ?: $defaultEndpoint);
 
 // ============================================
 // Application Configuration
