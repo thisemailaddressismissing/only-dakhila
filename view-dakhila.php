@@ -381,48 +381,73 @@ $qrApiUrl  = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . 
                                     <?php endif; ?>
                             </div></div><div class="col-md-12">
                                                 <p style="font-weight: bold; font-size: 12px; text-align: center; margin: 0px; padding: 0px;"><u>জমির বিবরণ</u></p>
-                                            </div><div class="row"><div class="col-md-12">                                    <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 49%; font-size: 11px; float: left;">
+                                            </div><div class="row"><div class="col-md-12">                                    <?php if (count($dags) <= 1): ?>
+                                    <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 100%; font-size: 11px; float: left;">
                                         <thead>
                                             <tr>
-                                                <th class="b1">ক্রমঃ</th>
-                                                <th class="b1">দাগ নং</th>
-                                                <th class="b1">জমির শ্রেণি</th>
-                                                <th class="b1">জমির পরিমাণ (শতাংশ)</th>
+                                                <th style="width:10%;text-align: center;" class="b1">ক্রমঃ</th>
+                                                <th style="width:30%;text-align: center;" class="b1">দাগ নং</th>
+                                                <th style="width:35%;text-align: center;" class="b1">জমির শ্রেণি</th>
+                                                <th style="width:25%;text-align: center;" class="b1">জমির পরিমাণ (শতাংশ)</th>
                                             </tr>
                                         </thead>
-                                        <tbody style="height: 105px;">
-                                                                                <?php foreach ($dagLeft as $i => $dag): ?>
-                                                <tr>
+                                        <tbody style="height: 21px;">
+                                            <?php foreach ($dags as $i => $dag): ?>
+                                            <tr>
                                                 <td class="b1 input_bangla text-center"><?= bn($i + 1) ?></td>
-                                                <td class="b1 input_bangla"><?= bn(h($dag['dag_no'])) ?></td>
-                                                <td class="b1">
-                                                    <?= h($dag['type']) ?>                                                </td>
-                                                <td class="b1 input_bangla"><?= bn_clean(h($dag['amount'])) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn(h($dag['dag_no'])) ?></td>
+                                                <td class="b1 text-center"><?= h($dag['type']) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn_clean(h($dag['amount'])) ?></td>
                                             </tr>
-                                                                            <?php endforeach; ?>
-                                    </tbody>
+                                            <?php endforeach; ?>
+                                        </tbody>
                                     </table>
-                                                                    <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 49%; font-size: 11px; float: right;">
+                                    <?php else: 
+                                        $dagHalf = (int)ceil(count($dags) / 2);
+                                        $dagLeft = array_slice($dags, 0, $dagHalf);
+                                        $dagRight = array_slice($dags, $dagHalf);
+                                    ?>
+                                    <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 49%; font-size: 11px; float: left;">
                                         <thead>
                                             <tr>
-                                                <th class="b1">ক্রমঃ</th>
-                                                <th class="b1">দাগ নং</th>
-                                                <th class="b1">জমির শ্রেণি</th>
-                                                <th class="b1">জমির পরিমাণ (শতাংশ)</th>
+                                                <th style="width:12%;text-align: center;" class="b1">ক্রমঃ</th>
+                                                <th style="width:28%;text-align: center;" class="b1">দাগ নং</th>
+                                                <th style="width:32%;text-align: center;" class="b1">জমির শ্রেণি</th>
+                                                <th style="width:28%;text-align: center;" class="b1">জমির পরিমাণ (শতাংশ)</th>
                                             </tr>
                                         </thead>
-                                        <tbody style="height: 105px;">
-                                                                                <?php foreach ($dagRight as $i => $dag): ?>
-                                                <tr>
-                                                <td class="b1 input_bangla text-center"><?= bn(count($dagLeft) + $i + 1) ?></td>
-                                                <td class="b1 input_bangla"><?= bn(h($dag['dag_no'])) ?></td>
-                                                <td class="b1">
-                                                    <?= h($dag['type']) ?>                                                </td>
-                                                <td class="b1 input_bangla"><?= bn_clean(h($dag['amount'])) ?></td>
+                                        <tbody style="height: 21px;">
+                                            <?php foreach ($dagLeft as $i => $dag): ?>
+                                            <tr>
+                                                <td class="b1 input_bangla text-center"><?= bn($i + 1) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn(h($dag['dag_no'])) ?></td>
+                                                <td class="b1 text-center"><?= h($dag['type']) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn_clean(h($dag['amount'])) ?></td>
                                             </tr>
-                                                                            <?php endforeach; ?>
-                                    </tbody>
+                                            <?php endforeach; ?>
+                                        </tbody>
                                     </table>
+                                    <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 49%; font-size: 11px; float: right;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:12%;text-align: center;" class="b1">ক্রমঃ</th>
+                                                <th style="width:28%;text-align: center;" class="b1">দাগ নং</th>
+                                                <th style="width:32%;text-align: center;" class="b1">জমির শ্রেণি</th>
+                                                <th style="width:28%;text-align: center;" class="b1">জমির পরিমাণ (শতাংশ)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="height: 21px;">
+                                            <?php foreach ($dagRight as $i => $dag): ?>
+                                            <tr>
+                                                <td class="b1 input_bangla text-center"><?= bn(count($dagLeft) + $i + 1) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn(h($dag['dag_no'])) ?></td>
+                                                <td class="b1 text-center"><?= h($dag['type']) ?></td>
+                                                <td class="b1 input_bangla text-center"><?= bn_clean(h($dag['amount'])) ?></td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                    <?php endif; ?>
                                    
                             
                                     <table style="border: 1px dotted; border-collapse: collapse; margin:10px 2px ; width: 100%; font-size: 12px;">
