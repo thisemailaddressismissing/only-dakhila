@@ -14,8 +14,9 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mod_rewrite for clean extensionless URLs
 RUN a2enmod rewrite
 
-# Allow .htaccess overrides in Apache
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+# Allow .htaccess overrides in Apache & set global ServerName
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Set Working Directory
 WORKDIR /var/www/html
