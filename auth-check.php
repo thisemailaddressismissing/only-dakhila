@@ -64,7 +64,10 @@ function refreshBalance(): float {
 // ============================================
 function deductBalance(int $userId, float $amount, string $description = ''): bool {
     $db = getDB();
-    $db->beginTransaction();
+    $inTx = $db->inTransaction();
+    if (!$inTx) {
+        $db->beginTransaction();
+    }
     try {
         // Lock and check balance
         $stmt = $db->prepare("SELECT balance FROM users WHERE id = :id FOR UPDATE");
@@ -72,7 +75,9 @@ function deductBalance(int $userId, float $amount, string $description = ''): bo
         $balance = (float) $stmt->fetchColumn();
 
         if ($balance < $amount) {
-            $db->rollBack();
+            if (!$inTx && $db->inTransaction()) {
+                $db->rollBack();
+            }
             return false;
         }
 
@@ -84,10 +89,14 @@ function deductBalance(int $userId, float $amount, string $description = ''): bo
         $stmt = $db->prepare("INSERT INTO balance_transactions (user_id, amount, type, description) VALUES (:uid, :amount, 'debit', :desc)");
         $stmt->execute([':uid' => $userId, ':amount' => $amount, ':desc' => $description]);
 
-        $db->commit();
+        if (!$inTx && $db->inTransaction()) {
+            $db->commit();
+        }
         return true;
-    } catch (PDOException $e) {
-        $db->rollBack();
+    } catch (Throwable $e) {
+        if (!$inTx && $db->inTransaction()) {
+            $db->rollBack();
+        }
         throw $e;
     }
 }
@@ -97,7 +106,10 @@ function deductBalance(int $userId, float $amount, string $description = ''): bo
 // ============================================
 function addBalance(int $userId, float $amount, string $description = ''): bool {
     $db = getDB();
-    $db->beginTransaction();
+    $inTx = $db->inTransaction();
+    if (!$inTx) {
+        $db->beginTransaction();
+    }
     try {
         $stmt = $db->prepare("UPDATE users SET balance = balance + :amount WHERE id = :id");
         $stmt->execute([':amount' => $amount, ':id' => $userId]);
@@ -105,10 +117,14 @@ function addBalance(int $userId, float $amount, string $description = ''): bool 
         $stmt = $db->prepare("INSERT INTO balance_transactions (user_id, amount, type, description) VALUES (:uid, :amount, 'credit', :desc)");
         $stmt->execute([':uid' => $userId, ':amount' => $amount, ':desc' => $description]);
 
-        $db->commit();
+        if (!$inTx && $db->inTransaction()) {
+            $db->commit();
+        }
         return true;
-    } catch (PDOException $e) {
-        $db->rollBack();
+    } catch (Throwable $e) {
+        if (!$inTx && $db->inTransaction()) {
+            $db->rollBack();
+        }
         throw $e;
     }
 }
