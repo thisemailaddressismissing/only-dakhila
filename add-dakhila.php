@@ -529,10 +529,14 @@ document.addEventListener('DOMContentLoaded', function() {
     onYearChange();
     // Form submit loading state
     const form = document.getElementById('dakhilaForm');
-    form.addEventListener('submit', function() {
-        const btn = document.getElementById('submitBtn');
-        const txt = document.getElementById('submitText');
-        btn.disabled = true;
+    if (form) {
+        form.addEventListener('submit', function() {
+            const btn = document.getElementById('submitBtn');
+            const txt = document.getElementById('submitText');
+            if (btn) btn.disabled = true;
+            if (txt) txt.textContent = '⏳ প্রক্রিয়াকরণ...';
+        });
+    }
 });
 </script>
 
