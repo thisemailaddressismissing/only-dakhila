@@ -1,27 +1,22 @@
 <?php
 // ============================================
-// Database Configuration (Neon PostgreSQL)
+// Database Configuration (Environment / Neon PostgreSQL)
 // ============================================
-define('DB_DRIVER', 'pgsql'); // 'pgsql' for Neon Postgres, 'mysql' for MySQL
-define('DB_HOST', 'ep-steep-field-azbpni91-pooler.c-3.ap-southeast-1.aws.neon.tech');
-define('DB_PORT', '5432');
-define('DB_NAME', 'neondb');
-define('DB_USER', 'neondb_owner');
-define('DB_PASS', 'npg_9pzPHG2dftiU');
-define('DB_SSLMODE', 'require');
-
-// MySQL Fallback Config
-define('MYSQL_HOST', 'localhost');
-define('MYSQL_NAME', 'dakhila_db');
-define('MYSQL_USER', 'root');
-define('MYSQL_PASS', '');
+define('DB_DRIVER', getenv('DB_DRIVER') ?: 'pgsql'); // 'pgsql' for Neon Postgres, 'mysql' for MySQL
+define('DB_HOST', getenv('DB_HOST') ?: 'ep-steep-field-azbpni91-pooler.c-3.ap-southeast-1.aws.neon.tech');
+define('DB_PORT', getenv('DB_PORT') ?: '5432');
+define('DB_NAME', getenv('DB_NAME') ?: 'neondb');
+define('DB_USER', getenv('DB_USER') ?: 'neondb_owner');
+define('DB_PASS', getenv('DB_PASS') ?: 'npg_9pzPHG2dftiU');
+define('DB_SSLMODE', getenv('DB_SSLMODE') ?: 'require');
+define('DB_ENDPOINT', getenv('DB_ENDPOINT') ?: 'ep-steep-field-azbpni91');
 
 // ============================================
 // Application Configuration
 // ============================================
-define('SITE_NAME', 'ভূমি উন্নয়ন কর দাখিলা');
-define('COST_PER_SUBMIT', 50);      // টাকা — প্রতি দাখিলা সাবমিটের খরচ
-define('DEFAULT_BALANCE', 0);       // নতুন ইউজারের ডিফল্ট ব্যালেন্স
+define('SITE_NAME', getenv('SITE_NAME') ?: 'ভূমি উন্নয়ন কর দাখিলা');
+define('COST_PER_SUBMIT', getenv('COST_PER_SUBMIT') ? (float)getenv('COST_PER_SUBMIT') : 50);
+define('DEFAULT_BALANCE', getenv('DEFAULT_BALANCE') ? (float)getenv('DEFAULT_BALANCE') : 0);
 define('SESSION_LIFETIME', 86400);  // 24 hours
 
 // ============================================
@@ -31,15 +26,18 @@ function getDB(): PDO {
     static $pdo = null;
     if ($pdo === null) {
         if (DB_DRIVER === 'pgsql') {
-            $dsn = 'pgsql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';sslmode=' . DB_SSLMODE . ";options='endpoint=ep-steep-field-azbpni91'";
+            $dsn = 'pgsql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';sslmode=' . DB_SSLMODE;
+            if (DB_ENDPOINT) {
+                $dsn .= ";options='endpoint=" . DB_ENDPOINT . "'";
+            }
             $pdo = new PDO($dsn, DB_USER, DB_PASS, [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
         } else {
-            $dsn = 'mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_NAME . ';charset=utf8mb4';
-            $pdo = new PDO($dsn, MYSQL_USER, MYSQL_PASS, [
+            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
@@ -96,4 +94,3 @@ function setSetting(string $key, string $value): bool {
         return false;
     }
 }
-
