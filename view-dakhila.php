@@ -500,28 +500,35 @@ $qrApiUrl  = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . 
             </div>
         </div>
      -->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div style="width: 350px; float: left;" align="left">
-                                                <p style="margin: 0 !important;">
-                                                    <!-- <p style="margin: 0 !important;">নোট: সর্বশেষ কর পরিশোধের সাল - ১৪৩২</p> -->
-                                                    নোট: সর্বশেষ কর পরিশোধের সাল -
-                                                    <?= $fiscalYearEn ?>                                                    (অর্থবছর)
+                                    <table style="width: 100%; margin-top: 5px; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width: 40%; vertical-align: top; text-align: left;">
+                                                <p style="margin: 0 0 3px 0 !important; font-size: 12px;">
+                                                    নোট: সর্বশেষ কর পরিশোধের সাল - <?= $fiscalYearEn ?> (অর্থবছর)
                                                 </p>
-                                                <p class="input_bangla"> চালান নং : <?= bn(h($r['challan_no'])) ?></p>
-                                                <p>
-
-                                                                                                        তারিখ : <div style="margin-top: -37px;margin-left: 10px;"><p style="width: 115px;padding: 0;margin: 0;margin-left: 38px;margin-bottom: 2px;"><?= $banglaLine ?></p><span style="border-top:1px solid; margin-left:36px;"><?= $englishLine ?></span></p></div>
+                                                <p class="input_bangla" style="margin: 0 0 3px 0 !important; font-size: 12px;">
+                                                    চালান নং : <?= bn(h($r['challan_no'])) ?>
                                                 </p>
-                                            </div>
-                                            <div style="width: 90px; float: left;" align="center">
-                                                <img src="<?= $qrApiUrl ?>" alt="QR Code" style="width: 75px; height: 75px; display: block; margin: 0 auto;" title="Verify: <?= h($verifyUrl) ?>" />
-                                            </div>
-                                            <div style="width: 265px; float: right; text-align: right;font-size: 12px;font-family: 'kalpurush',Arial,sans-serif;" >
-                                                                                                    <p class="text-center" style="padding: 5px; ">এই দাখিলা ইলেক্ট্রনিকভাবে তৈরি করা হয়েছে, <br> কোন স্বাক্ষর প্রয়োজন নেই।</p>
-                                                                                            </div>
-                                        </div>   
-                                    </div>   
+                                                <table style="border-collapse: collapse; font-size: 12px; margin-top: 2px;">
+                                                    <tr>
+                                                        <td style="vertical-align: middle; padding-right: 5px; white-space: nowrap;">তারিখ :</td>
+                                                        <td style="text-align: center; vertical-align: middle;">
+                                                            <div style="margin-bottom: 2px;"><?= $banglaLine ?></div>
+                                                            <div style="border-top: 1px solid #000; padding-top: 1px;"><?= $englishLine ?></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td style="width: 20%; vertical-align: top; text-align: center;">
+                                                <img src="<?= $qrApiUrl ?>" alt="QR Code" style="width: 75px; height: 75px; display: inline-block; margin: 0 auto;" title="Verify: <?= h($verifyUrl) ?>" />
+                                            </td>
+                                            <td style="width: 40%; vertical-align: top; text-align: center; font-size: 12px; font-family: 'kalpurush',Arial,sans-serif; line-height: 1.4;">
+                                                <div style="margin-top: 0; padding: 0;">
+                                                    এই দাখিলা ইলেক্ট্রনিকভাবে তৈরি করা হয়েছে,<br>কোন স্বাক্ষর প্রয়োজন নেই।
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>   
                                 </div>
                             </div>
                             <div class="row">
