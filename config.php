@@ -16,7 +16,7 @@ define('DB_ENDPOINT', getenv('DB_ENDPOINT') ?: $defaultEndpoint);
 // Application Configuration
 // ============================================
 define('SITE_NAME', getenv('SITE_NAME') ?: 'ভূমি উন্নয়ন কর দাখিলা');
-define('COST_PER_SUBMIT', getenv('COST_PER_SUBMIT') ? (float)getenv('COST_PER_SUBMIT') : 50);
+define('COST_PER_SUBMIT', getenv('COST_PER_SUBMIT') ? (float)getenv('COST_PER_SUBMIT') : 100);
 define('DEFAULT_BALANCE', getenv('DEFAULT_BALANCE') ? (float)getenv('DEFAULT_BALANCE') : 0);
 define('SESSION_LIFETIME', 86400);  // 24 hours
 
